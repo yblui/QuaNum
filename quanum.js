@@ -4,6 +4,7 @@ function $qn() {
     this.minus = $minus;
     this.max = $max;
     this.min = $min;
+    this.calc = $calc;
 }
 
 var qn = new $qn();
@@ -106,9 +107,7 @@ function $minus(ma, mb) {
     return pc.join("");
 }
 
-function $cheb(valb) {
-    return valb >= 0 || valb == "."
-}
+var $cheb = (valb) => valb >= 0 || valb == ".";
 
 function $divide(da, db) {
     return;
@@ -119,29 +118,49 @@ function $calc(ca) {
 }
 
 function $max(a, b) {
+    var fs = false;
+    var fj = "";
     if (a.indexOf(".") == -1) a = a + ".";
     if (b.indexOf(".") == -1) b = b + ".";
-    if (a.split(".")[0].length > b.split(".")[0].length) return a;
-    else if (a.split(".")[0].length < b.split(".")[0].length) return b;
+    if (a.indexOf("-") != -1 && b.indexOf("-") == -1) return a;
+    else if (a.indexOf("-") == -1 && b.indexOf("-") != -1) return b;
+    if (a.indexOf("-") != -1) {
+        fs = true;
+        fj = "-";
+    }
+    a = a.replace("-", "");
+    b = b.replace("-", "");
+    if ((a.split(".")[0].length > b.split(".")[0].length) ^ fs) return fj + a;
+    else if ((a.split(".")[0].length < b.split(".")[0].length) ^ fs) return fj + b;
     else {
         for (var k = 0; k < a.length; k++) {
-            if (a.split("")[k] != "." && Number(a.split("")[k]) > Number(b.split("")[k])) return a;
-            else if (a.split("")[k] != "." && Number(a.split("")[k]) < Number(b.split("")[k])) return b;
+            if ((a.split("")[k] != "." && Number(a.split("")[k]) > Number(b.split("")[k])) ^ fs) return fj + a;
+            else if ((a.split("")[k] != "." && Number(a.split("")[k]) < Number(b.split("")[k])) ^ fs) return fj + b;
         }
-        return a;
+        return fj + a;
     }
 }
 
 function $min(a, b) {
+    var fs = false;
+    var fj = "";
     if (a.indexOf(".") == -1) a = a + ".";
     if (b.indexOf(".") == -1) b = b + ".";
-    if (a.split(".")[0].length > b.split(".")[0].length) return b;
-    else if (a.split(".")[0].length < b.split(".")[0].length) return a;
+    if (a.indexOf("-") != -1 && b.indexOf("-") == -1) return b;
+    else if (a.indexOf("-") == -1 && b.indexOf("-") != -1) return a;
+    if (a.indexOf("-") != -1) {
+        fs = true;
+        fj = "-";
+    }
+    a = a.replace("-", "");
+    b = b.replace("-", "");
+    if ((a.split(".")[0].length > b.split(".")[0].length) ^ fs) return fj + b;
+    else if ((a.split(".")[0].length < b.split(".")[0].length) ^ fs) return fj + a;
     else {
         for (var k = 0; k < a.length; k++) {
-            if (a.split("")[k] != "." && Number(a.split("")[k]) > Number(b.split("")[k])) return b;
-            else if (a.split("")[k] != "." && Number(a.split("")[k]) < Number(b.split("")[k])) return a;
+            if ((a.split("")[k] != "." && Number(a.split("")[k]) > Number(b.split("")[k])) ^ fs) return fj + b;
+            else if ((a.split("")[k] != "." && Number(a.split("")[k]) < Number(b.split("")[k])) ^ fs) return fj + a;
         }
-        return a;
+        return fj + a;
     }
 }
