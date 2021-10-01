@@ -1,6 +1,9 @@
 function $qn() {
     this.plus = $plus;
     this.times = $times;
+    this.minus = $minus;
+    this.max = $max;
+    this.min = $min;
 }
 
 var qn = new $qn();
@@ -66,7 +69,45 @@ function $times(ta, tb) {
 }
 
 function $minus(ma, mb) {
-    return;
+    if (ma.indexOf(".") == -1) ma = ma + ".";
+    if (mb.indexOf(".") == -1) mb = mb + ".";
+    var mma = $max(ma, mb).split("");
+    var mmb = $min(ma, mb).split("");
+    if (mma.join("").split(".")[0].length > mmb.join("").split(".")[0].length) {
+        var x = mma.join("").split(".")[0].length - mmb.join("").split(".")[0].length;
+        for (var i = 0; i < x; i++) mmb.unshift("0");
+    } else {
+        x = mmb.join("").split(".")[0].length - mma.join("").split(".")[0].length;
+        for (i = 0; i < x; i++) mma.unshift("0");
+    }
+    if (mma.join("").split(".")[1].length > mmb.join("").split(".")[1].length) {
+        x = mma.join("").split(".")[1].length - mmb.join("").split(".")[1].length;
+        for (var j = 0; j < x; j++) mmb.push("0");
+    } else {
+        x = mmb.join("").split(".")[1].length - mma.join("").split(".")[1].length;
+        for (j = 0; j < x; j++) mma.push("0");
+    }
+    var pc = [];
+    for (i = 0; i < mma.length; i++) {
+        if (mma[i] != ".") pc[i] = Number(mma[i]) - Number(mmb[i]);
+        else if (mma[i] == ".") pc[i] = ".";
+    }
+    while (!pc.every($cheb)) {
+        for (i = 0; i < pc.length; i++) {
+            if (pc[i] < 0 && pc[i - 1] != ".") {
+                pc[i] += 10;
+                pc[i - 1] -= 1;
+            } else if (pc[i] < 0 && pc[i - 1] == ".") {
+                pc[i] += 10;
+                pc[i - 2] -= 1;
+            }
+        }
+    }
+    return pc.join("");
+}
+
+function $cheb(valb) {
+    return valb >= 0 || valb == "."
 }
 
 function $divide(da, db) {
@@ -75,4 +116,32 @@ function $divide(da, db) {
 
 function $calc(ca) {
     return;
+}
+
+function $max(a, b) {
+    if (a.indexOf(".") == -1) a = a + ".";
+    if (b.indexOf(".") == -1) b = b + ".";
+    if (a.split(".")[0].length > b.split(".")[0].length) return a;
+    else if (a.split(".")[0].length < b.split(".")[0].length) return b;
+    else {
+        for (var k = 0; k < a.length; k++) {
+            if (a.split("")[k] != "." && Number(a.split("")[k]) > Number(b.split("")[k])) return a;
+            else if (a.split("")[k] != "." && Number(a.split("")[k]) < Number(b.split("")[k])) return b;
+        }
+        return a;
+    }
+}
+
+function $min(a, b) {
+    if (a.indexOf(".") == -1) a = a + ".";
+    if (b.indexOf(".") == -1) b = b + ".";
+    if (a.split(".")[0].length > b.split(".")[0].length) return b;
+    else if (a.split(".")[0].length < b.split(".")[0].length) return a;
+    else {
+        for (var k = 0; k < a.length; k++) {
+            if (a.split("")[k] != "." && Number(a.split("")[k]) > Number(b.split("")[k])) return b;
+            else if (a.split("")[k] != "." && Number(a.split("")[k]) < Number(b.split("")[k])) return a;
+        }
+        return a;
+    }
 }
