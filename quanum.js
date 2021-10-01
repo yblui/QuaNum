@@ -1,3 +1,10 @@
+function $qn() {
+    this.plus = $plus;
+    this.times = $times;
+}
+
+var qn = new $qn();
+
 function $plus(pa, pb) {
     if (pa.indexOf(".") == -1) pa = pa + ".";
     if (pb.indexOf(".") == -1) pb = pb + ".";
@@ -33,24 +40,39 @@ function $plus(pa, pb) {
     return pc.join("");
 }
 
-function $check(val) {
-    return val < 10 || val == ".";
-}
+var $check = (val) => val < 10 || val == ".";
 
 function $times(ta, tb) {
-    var tta = ta.replace(/[\-\.]/g, "");
-    var ttb = tb.replace(/[\-\.]/g, "");
+    if (ta.indexOf(".") == -1) var tta = ta + ".";
+    if (tb.indexOf(".") == -1) var ttb = tb + ".";
+    var fh = [tta.indexOf("-") == -1, ttb.indexOf("-") == -1, tta.split(".")[1].length, ttb.split(".")[1].length];
+    tta = ta.replace(/[\-\.]/g, "");
+    ttb = tb.replace(/[\-\.]/g, "");
     tta = tta.split("").reverse();
     ttb = ttb.split("").reverse();
     var ret = "0";
     for (var i = 0; i < tta.length; i++) {
         for (var j = 0; j < ttb.length; j++) {
             var a = "";
-            for (var k = 0; k < i + j; k++) {
-                a = a + "0";
-            }
+            for (var k = 0; k < i + j; k++) a = a + "0";
             ret = $plus(ret, Number(tta[i]) * Number(ttb[j]) + a);
         }
     }
+    if (fh[0] != fh[1]) ret = "-" + ret;
+    ret = ret.replace(".", "").split("");
+    ret.splice(ret.length - fh[2] - fh[3], 0, ".");
+    ret = ret.join("");
     return ret;
+}
+
+function $minus(ma, mb) {
+    return;
+}
+
+function $divide(da, db) {
+    return;
+}
+
+function $calc(ca) {
+    return;
 }
