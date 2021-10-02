@@ -5,16 +5,21 @@ function $qn() {
     this.divide = $divide;
     this.max = $max;
     this.min = $min;
+    this.random = $random;
     this.calc = $calc;
 }
 
 var qn = new $qn();
 
 function $plus(pa, pb) {
+    if (pa.indexOf("-") == -1 && pb.indexOf("-") != -1) return $minus(pa, pb.replace("-", ""));
+    if (pa.indexOf("-") != -1 && pb.indexOf("-") == -1) return $minus(pb, pa.replace("-", ""));
     if (pa.indexOf(".") == -1) pa = pa + ".";
     if (pb.indexOf(".") == -1) pb = pb + ".";
-    var ppa = pa.split("");
-    var ppb = pb.split("");
+    var ppa = pa.replace("-", "");
+    var ppb = pb.replace("-", "");
+    ppa = ppa.split("");
+    ppb = ppb.split("");
     if (ppa.join("").split(".")[0].length > ppb.join("").split(".")[0].length) {
         var x = ppa.join("").split(".")[0].length - ppb.join("").split(".")[0].length;
         for (var i = 0; i < x; i++) ppb.unshift("0");
@@ -42,13 +47,14 @@ function $plus(pa, pb) {
             }
         }
     }
+    if (pa.indexOf("-") != -1) return "-" + pc.join("");
     return pc.join("");
 }
 
 var $check = (val) => val < 10 || val == ".";
 
 function $times(ta, tb) {
-    var tta = ta, ttb = tb
+    var tta = ta, ttb = tb;
     if (ta.indexOf(".") == -1) tta = ta + ".";
     if (tb.indexOf(".") == -1) ttb = tb + ".";
     var fh = [tta.indexOf("-") == -1, ttb.indexOf("-") == -1, tta.split(".")[1].length, ttb.split(".")[1].length];
@@ -106,13 +112,13 @@ function $minus(ma, mb) {
             }
         }
     }
-    return pc.join("");
+    if (mma == ma) return pc.join("");
+    else return "-" + pc.join("");
 }
 
 var $cheb = (valb) => valb >= 0 || valb == ".";
 
 function $divide(da, db) {
-    debugger;
     var result = "", cou = 0;
     if (da.indexOf(".") == -1) da = da + ".";
     if (db.indexOf(".") == -1) db = db + ".";
@@ -121,7 +127,7 @@ function $divide(da, db) {
     da = $times(da, a);
     db = db.replace(".", "");
     var yushu = "";
-    for (var t = 0; t < 20; t++) {
+    for (var t = 0; t < 30; t++) {
         cou = 0;
         if (da[t] && da[t] != ".") yushu = yushu + da[t];
         else if (da[t] && da[t] == ".") {
@@ -130,22 +136,15 @@ function $divide(da, db) {
         }
         else yushu = yushu + "0";
         yushu = yushu.replace(".", "") + "."
-        while (yushu[0] == "0" && yushu[1] != ".") {
-            yushu = yushu.split("");
-            yushu[0] = "";
-            yushu = yushu.join("");
-        }
+        yushu = $format(yushu);
         while ($max(yushu, db) == yushu) {
             yushu = $minus(yushu, db);
             cou++
-            while (yushu[0] == "0" && yushu[1] != ".") {
-                yushu = yushu.split("");
-                yushu[0] = "";
-                yushu = yushu.join("");
-            }
+            yushu = $format(yushu);
         }
         result = result + cou;
     }
+    result = $format(result);
     return result;
 }
 
@@ -158,18 +157,10 @@ function $max(a, b) {
     var fj = "";
     if (a.indexOf(".") == -1) a = a + ".";
     if (b.indexOf(".") == -1) b = b + ".";
-    while (a[0] == "0" && a[1] != ".") {
-        a = a.split("");
-        a[0] = "";
-        a = a.join("");
-    }
-    while (b[0] == "0" && b[1] != ".") {
-        b = b.split("");
-        b[0] = "";
-        b = b.join("");
-    }
-    if (a.indexOf("-") != -1 && b.indexOf("-") == -1) return a;
-    else if (a.indexOf("-") == -1 && b.indexOf("-") != -1) return b;
+    a = $format(a);
+    b = $format(b);
+    if (a.indexOf("-") != -1 && b.indexOf("-") == -1) return b;
+    else if (a.indexOf("-") == -1 && b.indexOf("-") != -1) return a;
     if (a.indexOf("-") != -1) {
         fs = true;
         fj = "-";
@@ -192,18 +183,10 @@ function $min(a, b) {
     var fj = "";
     if (a.indexOf(".") == -1) a = a + ".";
     if (b.indexOf(".") == -1) b = b + ".";
-    while (a[0] == "0" && a[1] != ".") {
-        a = a.split("");
-        a[0] = "";
-        a = a.join("");
-    }
-    while (b[0] == "0" && b[1] != ".") {
-        b = b.split("");
-        b[0] = "";
-        b = b.join("");
-    }
-    if (a.indexOf("-") != -1 && b.indexOf("-") == -1) return b;
-    else if (a.indexOf("-") == -1 && b.indexOf("-") != -1) return a;
+    a = $format(a);
+    b = $format(b);
+    if (a.indexOf("-") != -1 && b.indexOf("-") == -1) return a;
+    else if (a.indexOf("-") == -1 && b.indexOf("-") != -1) return b;
     if (a.indexOf("-") != -1) {
         fs = true;
         fj = "-";
@@ -219,4 +202,17 @@ function $min(a, b) {
         }
         return fj + a;
     }
+}
+
+function $format(fa) {
+    while (fa[0] == "0" && fa[1] != ".") {
+        fa = fa.split("");
+        fa[0] = "";
+        fa = fa.join("");
+    }
+    return fa;
+}
+
+function $random(ra, rb) {
+    return;
 }
