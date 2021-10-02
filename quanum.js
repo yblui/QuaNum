@@ -48,8 +48,9 @@ function $plus(pa, pb) {
 var $check = (val) => val < 10 || val == ".";
 
 function $times(ta, tb) {
-    if (ta.indexOf(".") == -1) var tta = ta + ".";
-    if (tb.indexOf(".") == -1) var ttb = tb + ".";
+    var tta = ta, ttb = tb
+    if (ta.indexOf(".") == -1) tta = ta + ".";
+    if (tb.indexOf(".") == -1) ttb = tb + ".";
     var fh = [tta.indexOf("-") == -1, ttb.indexOf("-") == -1, tta.split(".")[1].length, ttb.split(".")[1].length];
     tta = ta.replace(/[\-\.]/g, "");
     ttb = tb.replace(/[\-\.]/g, "");
@@ -111,8 +112,40 @@ function $minus(ma, mb) {
 var $cheb = (valb) => valb >= 0 || valb == ".";
 
 function $divide(da, db) {
-    var result = "";
-
+    debugger;
+    var result = "", cou = 0;
+    if (da.indexOf(".") == -1) da = da + ".";
+    if (db.indexOf(".") == -1) db = db + ".";
+    var a = "1";
+    for (var k of db.split(".")[1]) a = a + "0";
+    da = $times(da, a);
+    db = db.replace(".", "");
+    var yushu = "";
+    for (var t = 0; t < 20; t++) {
+        cou = 0;
+        if (da[t] && da[t] != ".") yushu = yushu + da[t];
+        else if (da[t] && da[t] == ".") {
+            result = result + ".";
+            continue;
+        }
+        else yushu = yushu + "0";
+        yushu = yushu.replace(".", "") + "."
+        while (yushu[0] == "0" && yushu[1] != ".") {
+            yushu = yushu.split("");
+            yushu[0] = "";
+            yushu = yushu.join("");
+        }
+        while ($max(yushu, db) == yushu) {
+            yushu = $minus(yushu, db);
+            cou++
+            while (yushu[0] == "0" && yushu[1] != ".") {
+                yushu = yushu.split("");
+                yushu[0] = "";
+                yushu = yushu.join("");
+            }
+        }
+        result = result + cou;
+    }
     return result;
 }
 
@@ -125,6 +158,16 @@ function $max(a, b) {
     var fj = "";
     if (a.indexOf(".") == -1) a = a + ".";
     if (b.indexOf(".") == -1) b = b + ".";
+    while (a[0] == "0" && a[1] != ".") {
+        a = a.split("");
+        a[0] = "";
+        a = a.join("");
+    }
+    while (b[0] == "0" && b[1] != ".") {
+        b = b.split("");
+        b[0] = "";
+        b = b.join("");
+    }
     if (a.indexOf("-") != -1 && b.indexOf("-") == -1) return a;
     else if (a.indexOf("-") == -1 && b.indexOf("-") != -1) return b;
     if (a.indexOf("-") != -1) {
@@ -149,6 +192,16 @@ function $min(a, b) {
     var fj = "";
     if (a.indexOf(".") == -1) a = a + ".";
     if (b.indexOf(".") == -1) b = b + ".";
+    while (a[0] == "0" && a[1] != ".") {
+        a = a.split("");
+        a[0] = "";
+        a = a.join("");
+    }
+    while (b[0] == "0" && b[1] != ".") {
+        b = b.split("");
+        b[0] = "";
+        b = b.join("");
+    }
     if (a.indexOf("-") != -1 && b.indexOf("-") == -1) return b;
     else if (a.indexOf("-") == -1 && b.indexOf("-") != -1) return a;
     if (a.indexOf("-") != -1) {
