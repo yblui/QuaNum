@@ -1,6 +1,7 @@
 html, body {
     height: 100%;
     margin: 0;
+    font-family: "Microsoft Yahei UI", "Segoe UI", sans-serif;
 }
 
 h1 {
@@ -47,4 +48,23 @@ pre {
 
 .code-string {
     color: brown;
+}
+
+h2 {
+    font-weight: normal;
+    font-size: xx-large;
+}
+
+.flex {
+    display: flex;
+}
+
+.contents {
+    margin-right: 100px;
+}
+
+@media screen and (max-width:700px) {
+    .flex {
+        flex-direction: column;
+    }
 }

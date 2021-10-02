@@ -6,6 +6,7 @@ function $qn() {
     this.max = $max;
     this.min = $min;
     this.random = $random;
+    this.floor = $floor;
     this.calc = $calc;
 }
 
@@ -74,14 +75,19 @@ function $times(ta, tb) {
     ret = ret.replace(".", "").split("");
     ret.splice(ret.length - fh[2] - fh[3], 0, ".");
     ret = ret.join("");
-    return ret;
+    return $format(ret);
 }
 
 function $minus(ma, mb) {
+    if (ma.indexOf("-") != -1 && mb.indexOf("-") != -1) return $minus(mb.replace("-", ""), ma.replace("-", ""));
+    if (ma.indexOf("-") != -1 && mb.indexOf("-") == -1) return "-"+$plus(mb, ma.replace("-", ""));
+    if (ma.indexOf("-") == -1 && mb.indexOf("-") != -1) return $plus(ma, mb.replace("-", ""));
     if (ma.indexOf(".") == -1) ma = ma + ".";
     if (mb.indexOf(".") == -1) mb = mb + ".";
     var mma = $max(ma, mb).split("");
     var mmb = $min(ma, mb).split("");
+    if (mma.join("") == ma) var ji = "";
+    else ji = "-";
     if (mma.join("").split(".")[0].length > mmb.join("").split(".")[0].length) {
         var x = mma.join("").split(".")[0].length - mmb.join("").split(".")[0].length;
         for (var i = 0; i < x; i++) mmb.unshift("0");
@@ -112,8 +118,7 @@ function $minus(ma, mb) {
             }
         }
     }
-    if (mma == ma) return pc.join("");
-    else return "-" + pc.join("");
+    return $format(ji + pc.join(""));
 }
 
 var $cheb = (valb) => valb >= 0 || valb == ".";
@@ -139,7 +144,7 @@ function $divide(da, db) {
         yushu = $format(yushu);
         while ($max(yushu, db) == yushu) {
             yushu = $minus(yushu, db);
-            cou++
+            cou++;
             yushu = $format(yushu);
         }
         result = result + cou;
@@ -213,6 +218,23 @@ function $format(fa) {
     return fa;
 }
 
+function $floor(fn) {
+    if (fn.indexOf(".") != -1) {
+        fn = fn.split(".");
+        if (fn.join("").indexOf("-") == -1) fn[1] = "";
+        else {
+            fn[1] = "";
+            fn[0] = "-" + $plus(fn[0].replace("-", ""), "1.")
+        }
+        fn = fn.join("");
+    }
+    return fn;
+}
+
 function $random(ra, rb) {
-    return;
+    var rc="";
+    for(var i=0;i<30;i++){
+        rc=rc+$floor($times($divide(window.crypto.getRandomValues(new Uint32Array(1))[0].toString(), "4294967296."), "10"))
+    }
+    return $plus($floor($times($divide(window.crypto.getRandomValues(new Uint32Array(1))[0].toString(), "4294967296."), $minus(rb, ra))), ra)+rc;
 }
