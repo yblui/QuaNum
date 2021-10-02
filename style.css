@@ -13,10 +13,38 @@ h1 {
 
 #head {
     padding: 30vh 0;
-    background-image: linear-gradient(to bottom right, #460078, #774e94);
+    background-image: linear-gradient(to bottom right, #460078, #775cba);
     color: white;
 }
 
-#container {
+.container {
     padding: 0 10vw;
+}
+
+button {
+    border-style: none none solid none;
+    border-width: 3px;
+    border-color: #460078;
+    background-color: #775cba;
+    font-size: xx-large;
+    color: white;
+    transition: .3s;
+}
+
+button:hover {
+    opacity: .7;
+}
+
+#footer {
+    background-color: #eee;
+    padding-top: 3vh;
+    padding-bottom: 3vh;
+}
+
+pre {
+    border: solid 3px #ac9bd6;
+}
+
+.code-string {
+    color: brown;
 }

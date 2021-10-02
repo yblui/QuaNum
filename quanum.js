@@ -2,6 +2,7 @@ function $qn() {
     this.plus = $plus;
     this.times = $times;
     this.minus = $minus;
+    this.divide = $divide;
     this.max = $max;
     this.min = $min;
     this.calc = $calc;
@@ -110,7 +111,9 @@ function $minus(ma, mb) {
 var $cheb = (valb) => valb >= 0 || valb == ".";
 
 function $divide(da, db) {
-    return;
+    var result = "";
+
+    return result;
 }
 
 function $calc(ca) {
