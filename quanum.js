@@ -10,6 +10,11 @@ function $qn() {
     this.calc = $calc;
     this.pi = $pi;
     this.pow = $pow;
+    this.abs = $abs;
+    this.sin = $sin;
+    this.fact = $fact;
+    this.int = $int;
+    this.mod = $mod;
 }
 
 var qn = new $qn();
@@ -143,7 +148,9 @@ function $divide(da, db) {
     da = $times(da, a);
     db = db.replace(".", "");
     var yushu = "";
-    for (var t = 0; t < 30; t++) {
+    if (arguments[2]) var jd = arguments[2];
+    else jd = 30
+    for (var t = 0; t < jd; t++) {
         cou = 0;
         if (da[t] && da[t] != ".") yushu = yushu + da[t];
         else if (da[t] && da[t] == ".") {
@@ -187,13 +194,25 @@ function $max(a, b) {
     else if (a.split(".")[0].length < b.split(".")[0].length && fs) return fj + a;
     else if (a.split(".")[0].length < b.split(".")[0].length && !fs) return fj + b;
     else {
-        for (var k = 0; k < a.length; k++) {
-            if (a.split("")[k] != "." && Number(a.split("")[k]) > Number(b.split("")[k]) && fs) return fj + b;
-            else if (a.split("")[k] != "." && Number(a.split("")[k]) > Number(b.split("")[k]) && !fs) return fj + a;
-            else if (a.split("")[k] != "." && Number(a.split("")[k]) < Number(b.split("")[k]) && fs) return fj + a;
-            else if (a.split("")[k] != "." && Number(a.split("")[k]) < Number(b.split("")[k]) && !fs) return fj + b;
+        var z = ""
+        if (a.length > b.length) {
+            for (var i = 0; i < a.length - b.length; i++) {
+                z += "0"
+            }
+            b = b + z
+        } else if (a.length < b.length) {
+            for (i = 0; i < b.length - a.length; i++) {
+                z += "0"
+            }
+            a = a + z
         }
-        return fj + a;
+        for (var k = 0; k < a.length; k++) {
+            if (a.split("")[k] != "." && Number(a.split("")[k]) > Number(b.split("")[k]) && fs) return $format(fj + b);
+            else if (a.split("")[k] != "." && Number(a.split("")[k]) > Number(b.split("")[k]) && !fs) return $format(fj + a);
+            else if (a.split("")[k] != "." && Number(a.split("")[k]) < Number(b.split("")[k]) && fs) return $format(fj + a);
+            else if (a.split("")[k] != "." && Number(a.split("")[k]) < Number(b.split("")[k]) && !fs) return $format(fj + b);
+        }
+        return $format(fj + a);
     }
 }
 
@@ -217,17 +236,32 @@ function $min(a, b) {
     else if (a.split(".")[0].length < b.split(".")[0].length && fs) return fj + b;
     else if (a.split(".")[0].length < b.split(".")[0].length && !fs) return fj + a;
     else {
-        for (var k = 0; k < a.length; k++) {
-            if (a.split("")[k] != "." && Number(a.split("")[k]) > Number(b.split("")[k]) && fs) return fj + a;
-            else if (a.split("")[k] != "." && Number(a.split("")[k]) > Number(b.split("")[k]) && !fs) return fj + b;
-            else if (a.split("")[k] != "." && Number(a.split("")[k]) < Number(b.split("")[k]) && fs) return fj + b;
-            else if (a.split("")[k] != "." && Number(a.split("")[k]) < Number(b.split("")[k]) && !fs) return fj + a;
+        var z = ""
+        if (a.length > b.length) {
+            for (var i = 0; i < a.length - b.length; i++) {
+                z += "0"
+            }
+            b = b + z
+        } else if (a.length < b.length) {
+            for (i = 0; i < b.length - a.length; i++) {
+                z += "0"
+            }
+            a = a + z
         }
-        return fj + a;
+        for (var k = 0; k < a.length; k++) {
+            if (a.split("")[k] != "." && Number(a.split("")[k]) > Number(b.split("")[k]) && fs) return $format(fj + a);
+            else if (a.split("")[k] != "." && Number(a.split("")[k]) > Number(b.split("")[k]) && !fs) return $format(fj + b);
+            else if (a.split("")[k] != "." && Number(a.split("")[k]) < Number(b.split("")[k]) && fs) return $format(fj + b);
+            else if (a.split("")[k] != "." && Number(a.split("")[k]) < Number(b.split("")[k]) && !fs) return $format(fj + a);
+        }
+        return $format(fj + a);
     }
 }
 
 function $format(fa) {
+    if (fa.indexOf("-") != -1) var fj = "-";
+    else fj = "";
+    fa = fa.replace("-", "");
     while (fa[0] == "0" && fa[1] != ".") {
         fa = fa.split("");
         fa[0] = "";
@@ -240,7 +274,8 @@ function $format(fa) {
     }
     fa = fa.replace("-.", "-0.")
     if (fa.indexOf(".") == 0) fa = "0" + fa
-    return fa;
+    if (fa == "-0" || fa == "-0.") fa = "0."
+    return fj + fa;
 }
 
 function $floor(fn) {
@@ -293,4 +328,41 @@ function $pi(pd) {
         pi = $plus(pi, $times(fray, fraz))
     }
     return $times(pi, frax);
+}
+
+function $abs(aa) {
+    aa = aa.replace("-", "");
+    return aa;
+}
+
+function $fact(fa) {
+    if (fa.indexOf(".") == -1) fa = fa + ".";
+    var result = "1.";
+    for (var g = "1."; $max(g, fa) == fa; g = $plus(g, "1.")) {
+        result = $times(result, g);
+    }
+    return result;
+}
+
+function $sin(sa) {
+    sa = $mod(sa, "1");
+    var result = "0.";
+    for (var k = "1."; $max(k, "30.") == "30."; k = $plus(k, "1.")) {
+        var ls = $divide($times($pow("-1", $minus(k, "1")), $pow(sa, $minus($times("2", k), "1"))), $fact($minus($times("2", k), "1")));
+        ls = $format(ls);
+        result = $plus(result, ls);
+    }
+    return result;
+}
+
+function $int(ia) {
+    if (ia.indexOf(".") == -1) ia = ia + ".";
+    ia = ia.split(".")
+    ia[1] = "";
+    ia = ia.join("");
+    return ia;
+}
+
+function $mod(oa, ob) {
+    return $format($minus(oa, $times($int($divide(oa, ob)), ob)));
 }
