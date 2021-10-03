@@ -15,20 +15,31 @@
         <div class="contents">
             <h2>本页目录</h2>
             <ul>
-                <li>下载</li>
-                <li>范例</li>
+                <a href="#download">
+                    <li>下载</li>
+                </a>
+                <a href="#grammar">
+                    <li>语法</li>
+                </a>
+                <a href="#examples">
+                    <li>范例</li>
+                </a>
             </ul>
         </div>
         <div>
-            <h2>下载</h2>
+            <h2 id="download">下载</h2>
             <a href="quanum.js" download="quanum.js"><button>立即下载QuaNum</button></a>
-            <h2>范例</h2>
-            <pre><code>console.log(qn.plus(<span class="code-string">"6451.895"</span>, <span class="code-string">456.00"</span>));
+            <h2 id="grammar">语法</h2>
+            <h2 id="examples">范例</h2>
+            <pre><code>console.log(qn.plus(<span class="code-string">"6451.895"</span>, <span class="code-string">456.00"</span>));<wbr /><span class="code-comment">//"0.3"</span>
 console.log(qn.times(<span class="code-string">"123"</span>, <span class="code-string">"456"</span>));
 console.log(qn.minus(<span class="code-string">"6451.895"</span>, <span class="code-string">"456.00"</span>));
-console.log(qn.divide("2569.", "4560.1"));
-console.log(qn.max("-96.4", "9.6"));
-console.log(qn.min("759.15", "0."));</code></pre>
+console.log(qn.divide(<span class="code-string">"2569."</span>, <span class="code-string">"4560.1"</span>));
+console.log(qn.max(<span class="code-string">"-96.4"</span>, <span class="code-string">"9.6"</span>));
+console.log(qn.min(<span class="code-string">"759.15"</span>, <span class="code-string">"0."</span>));
+console.log(qn.random(<span class="code-string">"-8.5"</span>, <span class="code-string">"8.5"</span>));
+console.log(qn.floor(<span class="code-string">"-89.439"</span>));
+console.log(qn.pi(<span class="code-number">30</span>));<wbr /><span class="code-comment">//"3.14159265358979323846264338328336352614923565689717403037203125"</span></code></pre>
         </div>
     </div>
     <script>
@@ -38,6 +49,9 @@ console.log(qn.min("759.15", "0."));</code></pre>
         console.log(qn.divide("2569.", "4560.1"));
         console.log(qn.max("-96.4", "9.6"));
         console.log(qn.min("759.15", "0."));
+        console.log(qn.random("-8.5", "8.5"));
+        console.log(qn.floor("-89.439"));
+        console.log(qn.pi(30));
     </script>
     <div id="footer" class="container">
         此站点为开源。<a href="https://github.com/yblui/QuaNum">提升此页面。</a>

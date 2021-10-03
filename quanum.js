@@ -8,6 +8,8 @@ function $qn() {
     this.random = $random;
     this.floor = $floor;
     this.calc = $calc;
+    this.pi = $pi;
+    this.pow = $pow;
 }
 
 var qn = new $qn();
@@ -32,7 +34,8 @@ function $plus(pa, pb) {
     for (i = 0; i < Math.max(ppa.length, ppb.length); i++) {
         if (ppa[i] && ppb[i] && ppa[i] != ".") pc[i] = Number(ppa[i]) + Number(ppb[i]);
         else if (ppa[i] == ".") pc[i] = ".";
-        else pc[i] = Number(ppa[i]) || Number(ppb[i]);
+        else if (ppa[i]) pc[i] = Number(ppa[i]);
+        else pc[i] = Number(ppb[i])
     }
     while (!pc.every($check)) {
         for (i = 0; i < pc.length; i++) {
@@ -49,7 +52,7 @@ function $plus(pa, pb) {
         }
     }
     if (pa.indexOf("-") != -1) return "-" + pc.join("");
-    return pc.join("");
+    return $format(pc.join(""));
 }
 
 var $check = (val) => val < 10 || val == ".";
@@ -71,16 +74,19 @@ function $times(ta, tb) {
             ret = $plus(ret, Number(tta[i]) * Number(ttb[j]) + a);
         }
     }
-    if (fh[0] != fh[1]) ret = "-" + ret;
     ret = ret.replace(".", "").split("");
+    while (ret.length - fh[2] - fh[3] < 0) {
+        ret.unshift("0");
+    }
     ret.splice(ret.length - fh[2] - fh[3], 0, ".");
     ret = ret.join("");
+    if (fh[0] != fh[1]) ret = "-" + ret;
     return $format(ret);
 }
 
 function $minus(ma, mb) {
     if (ma.indexOf("-") != -1 && mb.indexOf("-") != -1) return $minus(mb.replace("-", ""), ma.replace("-", ""));
-    if (ma.indexOf("-") != -1 && mb.indexOf("-") == -1) return "-"+$plus(mb, ma.replace("-", ""));
+    if (ma.indexOf("-") != -1 && mb.indexOf("-") == -1) return "-" + $plus(mb, ma.replace("-", ""));
     if (ma.indexOf("-") == -1 && mb.indexOf("-") != -1) return $plus(ma, mb.replace("-", ""));
     if (ma.indexOf(".") == -1) ma = ma + ".";
     if (mb.indexOf(".") == -1) mb = mb + ".";
@@ -127,6 +133,11 @@ function $divide(da, db) {
     var result = "", cou = 0;
     if (da.indexOf(".") == -1) da = da + ".";
     if (db.indexOf(".") == -1) db = db + ".";
+    var fu = (da.indexOf("-") == -1) ^ (db.indexOf("-") == -1)
+    if (fu) fu = "-";
+    else fu = "";
+    da = da.replace("-", "");
+    db = db.replace("-", "");
     var a = "1";
     for (var k of db.split(".")[1]) a = a + "0";
     da = $times(da, a);
@@ -149,8 +160,7 @@ function $divide(da, db) {
         }
         result = result + cou;
     }
-    result = $format(result);
-    return result;
+    return $format(fu + result);
 }
 
 function $calc(ca) {
@@ -172,12 +182,16 @@ function $max(a, b) {
     }
     a = a.replace("-", "");
     b = b.replace("-", "");
-    if ((a.split(".")[0].length > b.split(".")[0].length) ^ fs) return fj + a;
-    else if ((a.split(".")[0].length < b.split(".")[0].length) ^ fs) return fj + b;
+    if (a.split(".")[0].length > b.split(".")[0].length && fs) return fj + b;
+    else if (a.split(".")[0].length > b.split(".")[0].length && !fs) return fj + a;
+    else if (a.split(".")[0].length < b.split(".")[0].length && fs) return fj + a;
+    else if (a.split(".")[0].length < b.split(".")[0].length && !fs) return fj + b;
     else {
         for (var k = 0; k < a.length; k++) {
-            if ((a.split("")[k] != "." && Number(a.split("")[k]) > Number(b.split("")[k])) ^ fs) return fj + a;
-            else if ((a.split("")[k] != "." && Number(a.split("")[k]) < Number(b.split("")[k])) ^ fs) return fj + b;
+            if (a.split("")[k] != "." && Number(a.split("")[k]) > Number(b.split("")[k]) && fs) return fj + b;
+            else if (a.split("")[k] != "." && Number(a.split("")[k]) > Number(b.split("")[k]) && !fs) return fj + a;
+            else if (a.split("")[k] != "." && Number(a.split("")[k]) < Number(b.split("")[k]) && fs) return fj + a;
+            else if (a.split("")[k] != "." && Number(a.split("")[k]) < Number(b.split("")[k]) && !fs) return fj + b;
         }
         return fj + a;
     }
@@ -198,12 +212,16 @@ function $min(a, b) {
     }
     a = a.replace("-", "");
     b = b.replace("-", "");
-    if ((a.split(".")[0].length > b.split(".")[0].length) ^ fs) return fj + b;
-    else if ((a.split(".")[0].length < b.split(".")[0].length) ^ fs) return fj + a;
+    if (a.split(".")[0].length > b.split(".")[0].length && fs) return fj + a;
+    else if (a.split(".")[0].length > b.split(".")[0].length && !fs) return fj + b;
+    else if (a.split(".")[0].length < b.split(".")[0].length && fs) return fj + b;
+    else if (a.split(".")[0].length < b.split(".")[0].length && !fs) return fj + a;
     else {
         for (var k = 0; k < a.length; k++) {
-            if ((a.split("")[k] != "." && Number(a.split("")[k]) > Number(b.split("")[k])) ^ fs) return fj + b;
-            else if ((a.split("")[k] != "." && Number(a.split("")[k]) < Number(b.split("")[k])) ^ fs) return fj + a;
+            if (a.split("")[k] != "." && Number(a.split("")[k]) > Number(b.split("")[k]) && fs) return fj + a;
+            else if (a.split("")[k] != "." && Number(a.split("")[k]) > Number(b.split("")[k]) && !fs) return fj + b;
+            else if (a.split("")[k] != "." && Number(a.split("")[k]) < Number(b.split("")[k]) && fs) return fj + b;
+            else if (a.split("")[k] != "." && Number(a.split("")[k]) < Number(b.split("")[k]) && !fs) return fj + a;
         }
         return fj + a;
     }
@@ -215,6 +233,13 @@ function $format(fa) {
         fa[0] = "";
         fa = fa.join("");
     }
+    while (fa[fa.length - 1] == "0" && fa.indexOf(".") != -1) {
+        fa = fa.split("");
+        fa[fa.length - 1] = "";
+        fa = fa.join("");
+    }
+    fa = fa.replace("-.", "-0.")
+    if (fa.indexOf(".") == 0) fa = "0" + fa
     return fa;
 }
 
@@ -232,9 +257,40 @@ function $floor(fn) {
 }
 
 function $random(ra, rb) {
-    var rc="";
-    for(var i=0;i<30;i++){
-        rc=rc+$floor($times($divide(window.crypto.getRandomValues(new Uint32Array(1))[0].toString(), "4294967296."), "10"))
+    var rc = "";
+    for (var i = 0; i < 30; i++) {
+        rc = rc + $floor($times($divide(window.crypto.getRandomValues(new Uint32Array(1))[0].toString(), "4294967296."), "10"))
     }
-    return $plus($floor($times($divide(window.crypto.getRandomValues(new Uint32Array(1))[0].toString(), "4294967296."), $minus(rb, ra))), ra)+rc;
+    return $plus($floor($times($divide(window.crypto.getRandomValues(new Uint32Array(1))[0].toString(), "4294967296."), $minus(rb, ra))), ra) + rc;
+}
+
+function $pow(oa, ob) {
+    if (ob.indexOf(".") == -1) ob = ob + ".";
+    var ooa = "1";
+    for (var y = "1."; $max(y, ob) == ob; y = $plus(y, "1.")) {
+        ooa = $times(ooa, oa)
+    }
+    for (var z = "-1."; $max(z, ob) == z; z = $minus(z, "1.")) {
+        ooa = $divide(ooa, oa)
+    }
+    if (ob == "0") return "1.";
+    return $format(ooa);
+}
+
+function $pi(pd) {
+    var pi = "0.";
+    var frax = $divide("1", $pow("2", "6"))
+    for (var n = 0; n < pd; n++) {
+        var fraa = "-" + $divide($pow("2", "5"), $plus($times("4", n.toString()), "1"));
+        var frab = "-" + $divide("1", $plus($times("4", n.toString()), "3"));
+        var frac = $divide($pow("2", "8"), $plus($times("10", n.toString()), "1"));
+        var frad = "-" + $divide($pow("2", "6"), $plus($times("10", n.toString()), "3"));
+        var frae = "-" + $divide($pow("2", "2"), $plus($times("10", n.toString()), "5"));
+        var fraf = "-" + $divide($pow("2", "2"), $plus($times("10", n.toString()), "7"));
+        var frag = $divide("1", $plus($times("10", n.toString()), "9"));
+        var fray = $divide($pow("-1", n.toString()), $pow("2", $times("10", n.toString())));
+        var fraz = $plus($plus($plus(fraa, frab), $plus(frac, frad)), $plus($plus(frae, fraf), frag));
+        pi = $plus(pi, $times(fray, fraz))
+    }
+    return $times(pi, frax);
 }

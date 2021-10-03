@@ -44,10 +44,15 @@ button:hover {
 
 pre {
     border: solid 3px #ac9bd6;
+    font-size: larger;
 }
 
 .code-string {
     color: brown;
+}
+
+.code-comment,.code-number {
+    color: green;
 }
 
 h2 {
@@ -67,4 +72,13 @@ h2 {
     .flex {
         flex-direction: column;
     }
+}
+
+a {
+    color: #460078;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
 }
