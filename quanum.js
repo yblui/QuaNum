@@ -3,6 +3,7 @@ function $qn() {
     this.times = $times;
     this.minus = $minus;
     this.divide = $divide;
+    this.div = $divide;
     this.max = $max;
     this.min = $min;
     this.random = $random;
@@ -10,13 +11,19 @@ function $qn() {
     this.calc = $calc;
     this.pi = $pi;
     this.pow = $pow;
+    this.power = $pow;
     this.abs = $abs;
+    this.absoluteValue = $abs;
     this.sin = $sin;
+    this.sine = $sin;
     this.fact = $fact;
+    this.factorial = $fact;
     this.int = $int;
     this.mod = $mod;
     this.e = $e;
+    this.euler = $e;
     this.sqrt = $sqrt;
+    this.squareRoot = $sqrt;
 }
 
 var qn = new $qn();
@@ -151,7 +158,7 @@ function $divide(da, db) {
     db = db.replace(".", "");
     var yushu = "";
     if (arguments[2]) var jd = arguments[2];
-    else jd = 30
+    else jd = 30;
     for (var t = 0; t < jd; t++) {
         cou = 0;
         if (da[t] && da[t] != ".") yushu = yushu + da[t];
@@ -329,7 +336,9 @@ function $pi(pd) {
     return $times(pi, frax);
 }
 
-var abs = (aa) => aa.replace("-", "");
+function $abs(aa) {
+    return aa.replace("-", "");
+}
 
 function $fact(fa) {
     if (fa.indexOf(".") == -1) fa = fa + ".";
@@ -372,6 +381,9 @@ function $e(ea) {
 }
 
 function $sqrt(sa) {
-    sa=sa.split("");
-    return sa;
+    var re = "1.";
+    for (let i = 0; i < 10; i++) {
+        re = $divide($plus(re, $divide(sa, re, 90)), "2.");
+    }
+    return re;
 }
