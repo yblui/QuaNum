@@ -15,6 +15,8 @@ function $qn() {
     this.fact = $fact;
     this.int = $int;
     this.mod = $mod;
+    this.e = $e;
+    this.sqrt = $sqrt;
 }
 
 var qn = new $qn();
@@ -262,6 +264,7 @@ function $format(fa) {
     if (fa.indexOf("-") != -1) var fj = "-";
     else fj = "";
     fa = fa.replace("-", "");
+    if (fa.indexOf(".") == -1) fa = fa + ".";
     while (fa[0] == "0" && fa[1] != ".") {
         fa = fa.split("");
         fa[0] = "";
@@ -302,19 +305,15 @@ function $random(ra, rb) {
 function $pow(oa, ob) {
     if (ob.indexOf(".") == -1) ob = ob + ".";
     var ooa = "1";
-    for (var y = "1."; $max(y, ob) == ob; y = $plus(y, "1.")) {
-        ooa = $times(ooa, oa)
-    }
-    for (var z = "-1."; $max(z, ob) == z; z = $minus(z, "1.")) {
-        ooa = $divide(ooa, oa)
-    }
+    for (var y = "1."; $max(y, ob) == ob; y = $plus(y, "1.")) ooa = $times(ooa, oa);
+    for (var z = "-1."; $max(z, ob) == z; z = $minus(z, "1.")) ooa = $divide(ooa, oa);
     if (ob == "0") return "1.";
     return $format(ooa);
 }
 
 function $pi(pd) {
     var pi = "0.";
-    var frax = $divide("1", $pow("2", "6"))
+    var frax = $divide("1", $pow("2", "6"));
     for (var n = 0; n < pd; n++) {
         var fraa = "-" + $divide($pow("2", "5"), $plus($times("4", n.toString()), "1"));
         var frab = "-" + $divide("1", $plus($times("4", n.toString()), "3"));
@@ -325,15 +324,12 @@ function $pi(pd) {
         var frag = $divide("1", $plus($times("10", n.toString()), "9"));
         var fray = $divide($pow("-1", n.toString()), $pow("2", $times("10", n.toString())));
         var fraz = $plus($plus($plus(fraa, frab), $plus(frac, frad)), $plus($plus(frae, fraf), frag));
-        pi = $plus(pi, $times(fray, fraz))
+        pi = $plus(pi, $times(fray, fraz));
     }
     return $times(pi, frax);
 }
 
-function $abs(aa) {
-    aa = aa.replace("-", "");
-    return aa;
-}
+var abs = (aa) => aa.replace("-", "");
 
 function $fact(fa) {
     if (fa.indexOf(".") == -1) fa = fa + ".";
@@ -365,4 +361,17 @@ function $int(ia) {
 
 function $mod(oa, ob) {
     return $format($minus(oa, $times($int($divide(oa, ob)), ob)));
+}
+
+function $e(ea) {
+    var res = "0.";
+    for (let i = "0."; $max(i, ea) == $format(ea); i = $plus(i, "1")) {
+        res = $plus(res, $divide("1", $fact(i)));
+    }
+    return res;
+}
+
+function $sqrt(sa) {
+    sa=sa.split("");
+    return sa;
 }
