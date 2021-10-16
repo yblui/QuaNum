@@ -24,6 +24,10 @@ function $qn() {
     this.euler = $e;
     this.sqrt = $sqrt;
     this.squareRoot = $sqrt;
+    this.cos = $cos;
+    this.cosine = $cos;
+    this.tan = $tan;
+    this.tangent = $tan;
 }
 
 var qn = new $qn();
@@ -49,7 +53,7 @@ function $plus(pa, pb) {
         if (ppa[i] && ppb[i] && ppa[i] != ".") pc[i] = Number(ppa[i]) + Number(ppb[i]);
         else if (ppa[i] == ".") pc[i] = ".";
         else if (ppa[i]) pc[i] = Number(ppa[i]);
-        else pc[i] = Number(ppb[i])
+        else pc[i] = Number(ppb[i]);
     }
     while (!pc.every($check)) {
         for (i = 0; i < pc.length; i++) {
@@ -89,9 +93,7 @@ function $times(ta, tb) {
         }
     }
     ret = ret.replace(".", "").split("");
-    while (ret.length - fh[2] - fh[3] < 0) {
-        ret.unshift("0");
-    }
+    while (ret.length - fh[2] - fh[3] < 0) ret.unshift("0");
     ret.splice(ret.length - fh[2] - fh[3], 0, ".");
     ret = ret.join("");
     if (fh[0] != fh[1]) ret = "-" + ret;
@@ -350,10 +352,10 @@ function $fact(fa) {
 }
 
 function $sin(sa) {
-    sa = $mod(sa, "1");
+    sa = $mod(sa, $pi(30));
     var result = "0.";
     for (var k = "1."; $max(k, "30.") == "30."; k = $plus(k, "1.")) {
-        var ls = $divide($times($pow("-1", $minus(k, "1")), $pow(sa, $minus($times("2", k), "1"))), $fact($minus($times("2", k), "1")));
+        var ls = $divide($times($pow("-1", $minus(k, "1.")), $pow(sa, $minus($times("2", k), "1"))), $fact($minus($times("2", k), "1")));
         ls = $format(ls);
         result = $plus(result, ls);
     }
@@ -374,16 +376,20 @@ function $mod(oa, ob) {
 
 function $e(ea) {
     var res = "0.";
-    for (let i = "0."; $max(i, ea) == $format(ea); i = $plus(i, "1")) {
-        res = $plus(res, $divide("1", $fact(i)));
-    }
+    for (let i = "0."; $max(i, ea) == $format(ea); i = $plus(i, "1.")) res = $plus(res, $divide("1.", $fact(i)));
     return res;
 }
 
 function $sqrt(sa) {
     var re = "1.";
-    for (let i = 0; i < 10; i++) {
-        re = $divide($plus(re, $divide(sa, re, 90)), "2.");
-    }
+    for (let i = 0; i < 10; i++) re = $divide($plus(re, $divide(sa, re, 90)), "2.");
     return re;
+}
+
+function $cos(ca) {
+    return $sqrt($minus("1.", $pow($sin(ca), "2.")));
+}
+
+function $tan(ta) {
+
 }
