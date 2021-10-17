@@ -182,6 +182,7 @@ function $divide(da, db) {
 }
 
 function $calc(ca) {
+
     return;
 }
 
@@ -207,15 +208,11 @@ function $max(a, b) {
     else {
         var z = ""
         if (a.length > b.length) {
-            for (var i = 0; i < a.length - b.length; i++) {
-                z += "0"
-            }
-            b = b + z
+            for (var i = 0; i < a.length - b.length; i++) z += "0";
+            b = b + z;
         } else if (a.length < b.length) {
-            for (i = 0; i < b.length - a.length; i++) {
-                z += "0"
-            }
-            a = a + z
+            for (i = 0; i < b.length - a.length; i++) z += "0";
+            a = a + z;
         }
         for (var k = 0; k < a.length; k++) {
             if (a.split("")[k] != "." && Number(a.split("")[k]) > Number(b.split("")[k]) && fs) return $format(fj + b);
@@ -250,14 +247,14 @@ function $min(a, b) {
         var z = ""
         if (a.length > b.length) {
             for (var i = 0; i < a.length - b.length; i++) {
-                z += "0"
+                z += "0";
             }
-            b = b + z
+            b = b + z;
         } else if (a.length < b.length) {
             for (i = 0; i < b.length - a.length; i++) {
-                z += "0"
+                z += "0";
             }
-            a = a + z
+            a = a + z;
         }
         for (var k = 0; k < a.length; k++) {
             if (a.split("")[k] != "." && Number(a.split("")[k]) > Number(b.split("")[k]) && fs) return $format(fj + a);
@@ -284,9 +281,9 @@ function $format(fa) {
         fa[fa.length - 1] = "";
         fa = fa.join("");
     }
-    fa = fa.replace("-.", "-0.")
-    if (fa.indexOf(".") == 0) fa = "0" + fa
-    if (fa == "-0" || fa == "-0.") fa = "0."
+    fa = fa.replace("-.", "-0.");
+    if (fa.indexOf(".") == 0) fa = "0" + fa;
+    if (fa == "-0" || fa == "-0.") fa = "0.";
     return fj + fa;
 }
 
@@ -345,9 +342,7 @@ function $abs(aa) {
 function $fact(fa) {
     if (fa.indexOf(".") == -1) fa = fa + ".";
     var result = "1.";
-    for (var g = "1."; $max(g, fa) == fa; g = $plus(g, "1.")) {
-        result = $times(result, g);
-    }
+    for (var g = "1."; $max(g, fa) == fa; g = $plus(g, "1.")) result = $times(result, g);
     return result;
 }
 
@@ -391,5 +386,11 @@ function $cos(ca) {
 }
 
 function $tan(ta) {
+    var alpha = $times(ta, "2.");
+    return $divide($minus("1.", $cos(alpha)), $sin(alpha), 90);
+}
 
+function $asin(aa){
+
+    return;
 }
