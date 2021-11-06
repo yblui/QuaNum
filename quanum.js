@@ -390,7 +390,8 @@ function $tan(ta) {
     return $divide($minus("1.", $cos(alpha)), $sin(alpha), 90);
 }
 
-function $asin(aa){
-
-    return;
+function $root(ra, rb) {
+    var re = "1.";
+    for (let i = 0; i < $times(rb, "20"); i++) re = $divide($plus(re, $divide(ra, re, 90)), rb);
+    return re;
 }

@@ -23,17 +23,18 @@ h1 {
 }
 
 button {
-    border-style: none none solid none;
-    border-width: 3px;
-    border-color: #460078;
-    background-color: #775cba;
-    font-size: xx-large;
-    color: white;
+    border: none;
+    border-radius: 1vw;
+    background-color: #ddd4f5;
+    color: #460078;
+    font-size: x-large;
     transition: .3s;
+    padding: 2vw;
+    cursor: pointer;
 }
 
 button:hover {
-    opacity: .7;
+    background-color: #ac9bd6;
 }
 
 #footer {
@@ -51,7 +52,7 @@ pre {
     color: brown;
 }
 
-.code-comment,.code-number {
+.code-comment, .code-number {
     color: green;
 }
 
