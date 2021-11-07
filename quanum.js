@@ -28,6 +28,7 @@ function $qn() {
     this.cosine = $cos;
     this.tan = $tan;
     this.tangent = $tan;
+    this.root = $root;
 }
 
 var qn = new $qn();
@@ -283,7 +284,7 @@ function $format(fa) {
     }
     fa = fa.replace("-.", "-0.");
     if (fa.indexOf(".") == 0) fa = "0" + fa;
-    if (fa == "-0" || fa == "-0.") fa = "0.";
+    if ((fa == "0" || fa == "0.") && fj == "-") fj = "";
     return fj + fa;
 }
 
@@ -309,6 +310,7 @@ function $random(ra, rb) {
 }
 
 function $pow(oa, ob) {
+    if ($max(ob, "1.") == "1." && $format(ob) != "1." && $min(ob, "0.") == "0." && $format(ob) != "0.") return $root(oa, $divide("1", ob));
     if (ob.indexOf(".") == -1) ob = ob + ".";
     var ooa = "1";
     for (var y = "1."; $max(y, ob) == ob; y = $plus(y, "1.")) ooa = $times(ooa, oa);
@@ -362,7 +364,7 @@ function $int(ia) {
     ia = ia.split(".")
     ia[1] = "";
     ia = ia.join("");
-    return ia;
+    return $format(ia);
 }
 
 function $mod(oa, ob) {
@@ -392,6 +394,10 @@ function $tan(ta) {
 
 function $root(ra, rb) {
     var re = "1.";
-    for (let i = 0; i < $times(rb, "20"); i++) re = $divide($plus(re, $divide(ra, re, 90)), rb);
+    for (let i = 0; i < $times(rb, "20."); i++) re = $divide($plus(re, $divide(ra, re, 90)), rb);
     return re;
+}
+
+function $log(la) {
+
 }
