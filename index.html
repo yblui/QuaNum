@@ -36,8 +36,8 @@
 console.log(qn.times(<span class="code-string">"123"</span>, <span class="code-string">"456"</span>));
 console.log(qn.minus(<span class="code-string">"6451.895"</span>, <span class="code-string">"456.00"</span>));
 console.log(qn.divide(<span class="code-string">"2569."</span>, <span class="code-string">"4560.1"</span>));
-console.log(qn.max(<span class="code-string">"-96.4"</span>, <span class="code-string">"9.6"</span>));
-console.log(qn.min(<span class="code-string">"759.15"</span>, <span class="code-string">"0."</span>));
+console.log(qn.max(<span class="code-string">"-96.4"</span>, <span class="code-string">"9.6"</span>));//"9.6"
+console.log(qn.min(<span class="code-string">"759.15"</span>, <span class="code-string">"0."</span>));//"0."
 console.log(qn.random(<span class="code-string">"-8.5"</span>, <span class="code-string">"8.5"</span>));
 console.log(qn.floor(<span class="code-string">"-89.439"</span>));
 console.log(qn.pi(<span class="code-number">30</span>));<wbr /><span class="code-comment">//"3.14159265358979323846264338328336352614923565689717403037203125"</span>
@@ -47,16 +47,14 @@ console.log(qn.fact("6."));//
 console.log(qn.sin("0.5"));//
 console.log(qn.cos("0.5"));//
 console.log(qn.tan("0.5"));//
-console.log(qn.int("84.6"));
-console.log(qn.sqrt("2."));</code></pre>
+console.log(qn.int("84.6"));//
+console.log(qn.sqrt("2."));//</code></pre>
         </div>
     </div>
     <script>
         console.log(qn.times("123.", "456."));
         console.log(qn.minus("6451.895", "456.01"));
         console.log(qn.divide("2569.", "4560.1"));
-        console.log(qn.max("-96.4", "9.6"));
-        console.log(qn.min("759.15", "0."));
         console.log(qn.random("-8.5", "8.5"));
         console.log(qn.floor("-89.439"));
         console.log(qn.pow("123.", "0."));

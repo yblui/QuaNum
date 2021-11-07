@@ -29,6 +29,7 @@ function $qn() {
     this.tan = $tan;
     this.tangent = $tan;
     this.root = $root;
+    this.log = $log;
 }
 
 var qn = new $qn();
